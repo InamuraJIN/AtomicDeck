@@ -1,28 +1,56 @@
+/* 全体設定 */
 body {
   background-color: black;
   color: white;
-  font-family: Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
+  font-family: Arial, sans-serif;
+  flex-direction: column;
+  position: relative;
 }
 
-.container {
+/* 左上の文字表示 */
+.display {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+/* ボタンの配置 */
+.button-container {
   display: flex;
   gap: 20px;
 }
 
-.symbol {
-  background: none;
-  border: none;
-  color: white;
+/* ボタンのスタイル */
+.symbol-button {
+  background: white;
+  color: black;
   font-size: 16vh; /* 画面の高さの1/6 */
+  border: 2px solid white;
+  padding: 10px;
   cursor: pointer;
-  transition: transform 0.2s;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
 }
 
-.symbol:hover {
-  transform: scale(1.2);
+.symbol-button:hover {
+  background: gray;
+  transform: scale(1.1);
+}
+
+.symbol-button:active {
+  background: lightgray;
 }

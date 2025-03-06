@@ -2,3 +2,6 @@ node_modules/
 dist/
 .vite/
 .env
+SN_Data.json
+Run_LocalWeb.bat
+AtomicSystemCalculator.tsx
