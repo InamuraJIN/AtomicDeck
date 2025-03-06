@@ -1,23 +1,28 @@
 body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .container {
-    text-align: center;
-  }
-  
-  input {
-    background-color: #222;
-    color: white;
-    border: 1px solid white;
-    padding: 10px;
-    font-size: 18px;
-  }
-  
+  background-color: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+.symbol {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16vh; /* 画面の高さの1/6 */
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.symbol:hover {
+  transform: scale(1.2);
+}
