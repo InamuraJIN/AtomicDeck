@@ -26,7 +26,7 @@ body {
 /* ボタン全体のコンテナ（中央配置） */
 .button-container {
   position: absolute;
-  bottom: 10%;
+  bottom: 15%;  /* ← ここを変更（少し上に移動） */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
