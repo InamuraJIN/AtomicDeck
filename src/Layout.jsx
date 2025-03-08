@@ -50,7 +50,7 @@ export default function Layout({
                   style={{ fontSize: BUTTON_FONT_SIZE }}
                   onClick={() => handleCardClick("♥")}
                 >
-                  ♥
+                  5
                 </button>
                 <button
                   className="symbol-button"
