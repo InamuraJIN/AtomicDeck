@@ -1,42 +1,44 @@
-/* 背景とレイアウト */
+/* 全体レイアウト */
 body {
   background-color: black;
   color: white;
   margin: 0;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-family: Arial, sans-serif;
-  flex-direction: column;
   position: relative;
 }
 
-/* 左上の表示領域 */
+/* Atomic表示（画面上部中央） */
+.atomic-display {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+}
+
+/* 左上のカード・位置表示 */
 .display {
   position: absolute;
   top: 10px;
   left: 10px;
-  font-size: 24px;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 10px 15px;
-  border-radius: 5px;
+  font-size: 40px;
 }
 
-/* ボタン全体のコンテナ（中央配置） */
+/* ボタンコンテナ（中央下部に配置） */
 .button-container {
   position: absolute;
-  bottom: 15%;  /* ← ここを変更（少し上に移動） */
+  bottom: 15%;
   left: 50%;
   transform: translateX(-50%);
+  width: 90vw;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 90vw;
-  max-width: 400px;
 }
 
-/* ボタンの行 */
+/* 各行 */
 .row {
   display: flex;
   justify-content: space-between;
@@ -45,17 +47,15 @@ body {
 
 /* ボタン共通スタイル */
 button {
-  font-size: 24px;
-  width: 100%;
-  height: 60px;
-  text-align: center;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+  font-size: 40px;
   flex: 1;
+  height: 80px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* シンボルボタン */
+/* スートボタン */
 .symbol-button {
   background: white;
   color: black;
@@ -67,28 +67,28 @@ button {
   color: white;
 }
 
-/* 削除ボタン（×） */
+/* 削除ボタン */
 .delete-button {
   background: red;
   color: white;
 }
 
-/* 確定ボタン（〇） */
+/* 確定ボタン */
 .ok-button {
   background: green;
   color: white;
 }
 
-/* 右下の^ボタン */
+/* 右下のトグルボタン */
 .toggle-button {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  font-size: 24px;
+  font-size: 40px;
   background: white;
   color: black;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   cursor: pointer;
 }
