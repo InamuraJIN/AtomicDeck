@@ -11,11 +11,11 @@ export default function App() {
   const [numberInput, setNumberInput] = useState("");
   // CSVデータ（AtomicSystem.csv）の内容（各行を文字列として保持）
   const [snList, setSnList] = useState([]);
-  // CSVから算出した結果（例："i=8 P=4-8"）
+  // ヘッダーに表示する i, P（例："i=16 P=8-16"）
   const [atomicDisplay, setAtomicDisplay] = useState("");  
-  // 画面2で計算された D,S の表示用
+  // 画面2で計算された D,S（例："D=3 S=2"）
   const [dValue, setDValue] = useState("");  
-  // 画面切替（1: カード入力画面、2: 位置入力画面）
+  // 画面切替（1: カード入力、2: 位置入力）
   const [currentScreen, setCurrentScreen] = useState(1);
   // ボタン隠し（〇ボタン押下後のトグル用）
   const [isHidden, setIsHidden] = useState(false);
@@ -25,19 +25,19 @@ export default function App() {
     fetch("/AtomicSystem.csv")
       .then((response) => response.text())
       .then((text) => {
-        const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+        const lines = text.split("\n").map(line => line.trim()).filter(Boolean);
         if (lines[0] === "SN") lines.shift();
         setSnList(lines);
       })
       .catch((error) => console.error("CSV読み込みエラー:", error));
   }, []);
 
-  // カード入力完了後、CSVを参照して atomicDisplay を更新する
+  // カード入力完了後、CSVを参照してヘッダー（i,P）の表示を更新
   useEffect(() => {
     if (cardSuit && cardValue && snList.length > 0) {
       const suitMapping = { "♥": "HT", "♣": "CL", "♦": "DM", "♠": "SP" };
       const inputSN = suitMapping[cardSuit] + "-" + cardValue;
-      const i = snList.indexOf(inputSN) + 1; // 存在しなければ 0 になる
+      const i = snList.indexOf(inputSN) + 1; // 存在しなければ 0
       if (i > 0) {
         const possibleP = calculatePValues(i);
         const minP = Math.min(...possibleP);
@@ -61,7 +61,7 @@ export default function App() {
     return possibleP;
   };
 
-  // 画面1：カード入力用の処理（添付ファイルの状態そのまま）
+  // 画面1：カード入力（添付ファイルの状態そのまま）
   const handleCardClick = (value) => {
     if (value === "×") {
       setCardSuit("");
@@ -89,7 +89,7 @@ export default function App() {
     }
   };
 
-  // 画面2：位置入力用の処理（添付ファイルの状態そのまま）
+  // 画面2：位置入力（添付ファイルの状態そのまま）
   const handlePositionClick = (digit) => {
     let candidate;
     if (numberInput.length < 2) {
@@ -100,7 +100,7 @@ export default function App() {
     const candidateInt = parseInt(candidate, 10);
     if (candidateInt <= 52) {
       setNumberInput(candidate);
-      setAtomicDisplay("");  // i, P の表示を消す
+      setAtomicDisplay("");  // ヘッダーの i,P を消す
       calculateDandS(candidateInt);
     } else {
       setNumberInput(digit);
@@ -120,7 +120,7 @@ export default function App() {
     }
   };
 
-  // 位置入力リセット（×ボタン押下時）：画面1に戻る際、SNは保持しつつ i, P を再取得
+  // 位置入力リセット（×ボタン）：画面1に戻る際、SNは保持してヘッダー（i,P）を再取得
   const handlePositionReset = () => {
     setNumberInput("");
     setDValue("");
