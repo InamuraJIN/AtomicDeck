@@ -1,14 +1,45 @@
 import React from "react";
 
-// 共通パラメータ（上部にまとめた変数）
-// これらの変数は、画面中央上部に表示される i, P と D, S の位置やフォントサイズ、
-// 画面上左上に表示される SN と P のフォントサイズおよび位置、
-// そして、ボタンのフォントサイズ・表示位置に利用されます。
+// 共通パラメータ（変更可能な変数）
+const TOP_DISPLAY_STYLE = { 
+  fontSize: "15px", 
+  marginTop: "0px", 
+  backgroundColor: "#555555", // 例：#555555（カラーコード）
+  textAlign: "center", 
+  padding: "5px"
+}; // ヘッダー（画面中央上部 i,P / D,S）の表示スタイル
 
-const TOP_DISPLAY_STYLE = { fontSize: "15px", marginTop: "20px" };   // 画面中央上部 (i,P / D,S) の表示スタイル
-const SN_DISPLAY_STYLE = { fontSize: "50px", marginTop: "60px" };       // 画面上左上 (SN,P) の表示スタイル
-const BUTTON_FONT_SIZE = "40px";                                      // ボタンのフォントサイズ
-// ボタンの表示位置は、既存の CSS やレイアウト構造に従います。
+const SN_DISPLAY_STYLE = { 
+  fontSize: "50px", 
+  marginTop: "10px"
+}; // 画面上左上 (SN,P) の表示スタイル
+
+const BUTTON_FONT_SIZE = "25px"; // ボタンのフォントサイズ
+
+// ボタンコンテナのスタイル（PCとスマホで分岐）
+const isMobile = window.innerWidth < 768; // スマホ判定（768px以下をスマホとする）
+const BUTTON_CONTAINER_STYLE = isMobile 
+  ? { 
+      width: "100vw", 
+      position: "fixed", 
+      bottom: "0", 
+      left: "50%", 
+      transform: "translateX(-50%)" 
+    }
+  : { 
+      width: "100%", 
+      maxWidth: "400px", 
+      margin: "0 auto" 
+    };
+
+// ページ全体のスタイル
+const PAGE_CONTAINER_STYLE = {
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  overflow: isMobile ? "hidden" : "visible"
+};
 
 export default function Layout({
   cardSuit,
@@ -24,24 +55,18 @@ export default function Layout({
   handlePositionReset,
 }) {
   return (
-    <div className="app">
-      <div className="atomic-display" style={TOP_DISPLAY_STYLE}>
-        {atomicDisplay}
-      </div>
+    <div className="app" style={PAGE_CONTAINER_STYLE}>
+      <header style={TOP_DISPLAY_STYLE}>
+        {currentScreen === 1 ? atomicDisplay : (currentScreen === 2 && dValue ? dValue : "")}
+      </header>
 
       <div className="display" style={SN_DISPLAY_STYLE}>
         <div>{cardSuit}{cardValue}</div>
         {currentScreen === 2 && numberInput && <div>{numberInput}</div>}
       </div>
 
-      {currentScreen === 2 && dValue && (
-        <div className="atomic-display" style={TOP_DISPLAY_STYLE}>
-          {dValue}
-        </div>
-      )}
-
       {!isHidden && (
-        <div className="button-container">
+        <div className="button-container" style={BUTTON_CONTAINER_STYLE}>
           {currentScreen === 1 ? (
             <>
               <div className="row">
@@ -50,7 +75,7 @@ export default function Layout({
                   style={{ fontSize: BUTTON_FONT_SIZE }}
                   onClick={() => handleCardClick("♥")}
                 >
-                  5
+                  ♥
                 </button>
                 <button
                   className="symbol-button"
