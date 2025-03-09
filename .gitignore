@@ -3,3 +3,5 @@ dist/
 .vite/
 .env
 Run_LocalWeb.bat
+^.css
+^.jsx
