@@ -4,10 +4,10 @@ import Layout from "./Layout";
 export default function App() {
   // カード入力用の状態
   const [cardSuit, setCardSuit] = useState("");   // 例: "♥"
-  const [cardValue, setCardValue] = useState("");   // 例: "10" または "A"
+  const [cardValue, setCardValue] = useState("");   // 例: "10" または "A" など
   const [displayText, setDisplayText] = useState([]);
   
-  // 位置入力用の状態（画面2）
+  // 位置入力用の状態（配置例02）
   const [numberInput, setNumberInput] = useState("");
   // CSVデータ（AtomicSystem.csv）の内容（各行を文字列として保持）
   const [snList, setSnList] = useState([]);
@@ -17,10 +17,10 @@ export default function App() {
   const [dValue, setDValue] = useState("");  
   // 画面切替（1: カード入力、2: 位置入力）
   const [currentScreen, setCurrentScreen] = useState(1);
-  // ボタン隠し（画面2で〇押下後のトグル用）
+  // ボタン隠し（〇ボタン押下後のトグル用）
   const [isHidden, setIsHidden] = useState(false);
 
-  // CSV読み込み（AtomicSystem.csvはpublicフォルダに配置）
+  // CSV読み込み
   useEffect(() => {
     fetch("/AtomicSystem.csv")
       .then((response) => response.text())
@@ -32,12 +32,12 @@ export default function App() {
       .catch((error) => console.error("CSV読み込みエラー:", error));
   }, []);
 
-  // カード入力完了後、CSVを参照してヘッダー（i,P）の表示を更新する
+  // カード入力完了後、CSVを参照してヘッダー（i,P）の表示を更新
   useEffect(() => {
     if (cardSuit && cardValue && snList.length > 0) {
       const suitMapping = { "♥": "HT", "♣": "CL", "♦": "DM", "♠": "SP" };
       const inputSN = suitMapping[cardSuit] + "-" + cardValue;
-      const i = snList.indexOf(inputSN) + 1;
+      const i = snList.indexOf(inputSN) + 1; // 存在しなければ 0
       if (i > 0) {
         const possibleP = calculatePValues(i);
         const minP = Math.min(...possibleP);
@@ -89,7 +89,7 @@ export default function App() {
     }
   };
 
-  // 画面2：位置入力の処理（添付ファイルの状態そのまま）
+  // 画面2：位置入力（添付ファイルの状態そのまま）
   const handlePositionClick = (digit) => {
     let candidate;
     if (numberInput.length < 2) {
@@ -120,7 +120,7 @@ export default function App() {
     }
   };
 
-  // 位置入力リセット（×押下時）：画面1に戻る際、SNは保持してヘッダー（i,P）を再取得
+  // 位置入力リセット（×ボタン）：画面1に戻る際、SNは保持してヘッダー（i,P）を再取得
   const handlePositionReset = () => {
     setNumberInput("");
     setDValue("");
