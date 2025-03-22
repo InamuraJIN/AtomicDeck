@@ -1,190 +1,143 @@
 import React from "react";
 
-// 共通パラメータ（変更可能な変数）
-const TOP_DISPLAY_STYLE = { 
-  fontSize: "15px", 
-  marginTop: "0px", 
-  backgroundColor: "#555555", // 例：#555555（カラーコード）
-  textAlign: "center", 
-  padding: "5px"
-}; // ヘッダー（画面中央上部 i,P / D,S）の表示スタイル
-
-const SN_DISPLAY_STYLE = { 
-  fontSize: "50px", 
-  marginTop: "10px"
-}; // 画面上左上 (SN,P) の表示スタイル
-
-const BUTTON_FONT_SIZE = "25px"; // ボタンのフォントサイズ
-
-// ボタンコンテナのスタイル（PCとスマホで分岐）
-const isMobile = window.innerWidth < 768; // スマホ判定（768px以下をスマホとする）
-const BUTTON_CONTAINER_STYLE = isMobile 
-  ? { 
-      width: "100vw", 
-      position: "fixed", 
-      bottom: "0", 
-      left: "50%", 
-      transform: "translateX(-50%)" 
+export const Layout = ({ headerStatus, inputSN, inputP, navigation, onPressButton, onPressDigit, onPressCircle, onPressReset }) => {
+  // Function to display header text based on the provided formulas
+  const getHeaderText = () => {
+    const B1 = inputSN || 0;
+    const B2 = inputP || 0;
+    
+    // Formula: ="P:" & TEXT(B1/2, "0") & "-" & B1
+    const pText = `P:${Math.floor(B1/2)}-${B1}`;
+    
+    // Formula: =IF(OR(B1-B2<0, B2-(B1-B2)<0), "NON", "D:" & (B1 - B2) & " S:" & (B2 - (B1 - B2)))
+    let dsText = "NON";
+    if ((B1-B2) >= 0 && (B2-(B1-B2)) >= 0) {
+      dsText = `D:${B1-B2} S:${B2-(B1-B2)}`;
     }
-  : { 
-      width: "100%", 
-      maxWidth: "400px", 
-      margin: "0 auto" 
-    };
+    
+    return headerStatus === 1 ? pText : dsText;
+  };
 
-// ページ全体のスタイル
-const PAGE_CONTAINER_STYLE = {
-  minHeight: "100vh",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  overflow: isMobile ? "hidden" : "visible"
-};
-
-export default function Layout({
-  cardSuit,
-  cardValue,
-  displayText,
-  numberInput,
-  atomicDisplay,
-  dValue,
-  currentScreen,
-  isHidden,
-  handleCardClick,
-  handlePositionClick,
-  handlePositionReset,
-}) {
   return (
-    <div className="app" style={PAGE_CONTAINER_STYLE}>
-      <header style={TOP_DISPLAY_STYLE}>
-        {currentScreen === 1 ? atomicDisplay : (currentScreen === 2 && dValue ? dValue : "")}
-      </header>
-
-      <div className="display" style={SN_DISPLAY_STYLE}>
-        <div>{cardSuit}{cardValue}</div>
-        {currentScreen === 2 && numberInput && <div>{numberInput}</div>}
+    <div className="container">
+      {/* Fixed header */}
+      <div className="fixedHeader">
+        <div className="headerText">{getHeaderText()}</div>
       </div>
 
-      {!isHidden && (
-        <div className="button-container" style={BUTTON_CONTAINER_STYLE}>
-          {currentScreen === 1 ? (
-            <>
-              <div className="row">
-                <button
-                  className="symbol-button"
-                  style={{ fontSize: BUTTON_FONT_SIZE }}
-                  onClick={() => handleCardClick("♥")}
-                >
-                  ♥
-                </button>
-                <button
-                  className="symbol-button"
-                  style={{ fontSize: BUTTON_FONT_SIZE }}
-                  onClick={() => handleCardClick("♣")}
-                >
-                  ♣
-                </button>
-                <button
-                  className="symbol-button"
-                  style={{ fontSize: BUTTON_FONT_SIZE }}
-                  onClick={() => handleCardClick("♦")}
-                >
-                  ♦
-                </button>
-                <button
-                  className="symbol-button"
-                  style={{ fontSize: BUTTON_FONT_SIZE }}
-                  onClick={() => handleCardClick("♠")}
-                >
-                  ♠
-                </button>
-              </div>
-              <div className="row">
-                {["A", "2", "3", "4", "5"].map((num) => (
-                  <button
-                    key={num}
-                    className="num-button"
-                    style={{ fontSize: BUTTON_FONT_SIZE }}
-                    onClick={() => handleCardClick(displayText[0] + num)}
-                  >
-                    {num}
-                  </button>
-                ))}
-              </div>
-              <div className="row">
-                {["6", "7", "8", "9", "10"].map((num) => (
-                  <button
-                    key={num}
-                    className="num-button"
-                    style={{ fontSize: BUTTON_FONT_SIZE }}
-                    onClick={() => handleCardClick(displayText[0] + num)}
-                  >
-                    {num}
-                  </button>
-                ))}
-              </div>
-              <div className="row">
-                <button
-                  className="delete-button"
-                  style={{ fontSize: BUTTON_FONT_SIZE }}
-                  onClick={() => handleCardClick("×")}
-                >
-                  ×
-                </button>
-                {["J", "Q", "K"].map((face) => (
-                  <button
-                    key={face}
-                    className="num-button"
-                    style={{ fontSize: BUTTON_FONT_SIZE }}
-                    onClick={() => handleCardClick(displayText[0] + face)}
-                  >
-                    {face}
-                  </button>
-                ))}
-                <button
-                  className="ok-button"
-                  style={{ fontSize: BUTTON_FONT_SIZE }}
-                  onClick={() => handleCardClick("〇")}
-                >
-                  〇
-                </button>
-              </div>
-            </>
+      {/* Main content area with scroll capability */}
+      <div className="scrollContent">
+        <div className="content">
+          {navigation === 1 ? (
+            <div className="inputSNContainer">
+              <div className="inputSNText">{inputSN}</div>
+            </div>
           ) : (
-            <>
-              {[
-                ["1", "2", "3"],
-                ["4", "5", "6"],
-                ["7", "8", "9"],
-                ["×", "0", "〇"]
-              ].map((row, idx) => (
-                <div key={idx} className="row">
-                  {row.map((val) => (
-                    <button
-                      key={val}
-                      className={
-                        val === "×"
-                          ? "delete-button"
-                          : val === "〇"
-                          ? "ok-button"
-                          : "num-button"
-                      }
-                      style={{ fontSize: BUTTON_FONT_SIZE }}
-                      onClick={() =>
-                        val === "×"
-                          ? handlePositionReset()
-                          : handlePositionClick(val)
-                      }
-                    >
-                      {val}
-                    </button>
-                  ))}
-                </div>
-              ))}
-            </>
+            <div className="inputPContainer">
+              <div className="inputPText">{inputP}</div>
+            </div>
           )}
         </div>
-      )}
+      </div>
+
+      {/* Fixed bottom buttons area */}
+      <div className="buttonContainer">
+        {navigation === 1 ? (
+          <>
+            <div className="buttonRow">
+              <button className="button" onClick={() => onPressDigit(1)}>
+                <span className="buttonText">1</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(2)}>
+                <span className="buttonText">2</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(3)}>
+                <span className="buttonText">3</span>
+              </button>
+            </div>
+            <div className="buttonRow">
+              <button className="button" onClick={() => onPressDigit(4)}>
+                <span className="buttonText">4</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(5)}>
+                <span className="buttonText">5</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(6)}>
+                <span className="buttonText">6</span>
+              </button>
+            </div>
+            <div className="buttonRow">
+              <button className="button" onClick={() => onPressDigit(7)}>
+                <span className="buttonText">7</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(8)}>
+                <span className="buttonText">8</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(9)}>
+                <span className="buttonText">9</span>
+              </button>
+            </div>
+            <div className="buttonRow">
+              <button className="button" onClick={onPressReset}>
+                <span className="buttonText">C</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(0)}>
+                <span className="buttonText">0</span>
+              </button>
+              <button className="button" onClick={onPressCircle}>
+                <span className="buttonText">○</span>
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="buttonRow">
+              <button className="button" onClick={() => onPressDigit(1)}>
+                <span className="buttonText">1</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(2)}>
+                <span className="buttonText">2</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(3)}>
+                <span className="buttonText">3</span>
+              </button>
+            </div>
+            <div className="buttonRow">
+              <button className="button" onClick={() => onPressDigit(4)}>
+                <span className="buttonText">4</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(5)}>
+                <span className="buttonText">5</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(6)}>
+                <span className="buttonText">6</span>
+              </button>
+            </div>
+            <div className="buttonRow">
+              <button className="button" onClick={() => onPressDigit(7)}>
+                <span className="buttonText">7</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(8)}>
+                <span className="buttonText">8</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(9)}>
+                <span className="buttonText">9</span>
+              </button>
+            </div>
+            <div className="buttonRow">
+              <button className="button" onClick={onPressReset}>
+                <span className="buttonText">C</span>
+              </button>
+              <button className="button" onClick={() => onPressDigit(0)}>
+                <span className="buttonText">0</span>
+              </button>
+              <button className="button" onClick={onPressCircle}>
+                <span className="buttonText">○</span>
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
-}
+};

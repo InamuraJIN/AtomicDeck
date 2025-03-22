@@ -1,0 +1,146 @@
+.app-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  background-color: #fff;
+}
+
+.fixedHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5;
+  padding: 15px 20px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #ddd;
+  height: 60px; /* 固定された高さ */
+  box-sizing: border-box;
+}
+
+.headerText {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.scrollContent {
+  padding-top: 70px; /* 固定ヘッダーのためのスペース */
+  flex: 1;
+  overflow-y: auto;
+  height: calc(100vh - 320px); /* 画面高さからヘッダーとボタンの高さを引く */
+}
+
+.content {
+  padding-bottom: 250px; /* ボタン用のスペース */
+  position: relative;
+}
+
+.inputSNContainer {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputSNText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.inputPContainer {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  z-index: 5;
+}
+
+.inputPText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.buttonContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
+.button {
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.upArrowContainer {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+.fixedPosition {
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  z-index: 5;
+}
+
+.positionText {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.upArrow {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.upArrowText {
+  font-size: 30px;
+  font-weight: bold;
+}
